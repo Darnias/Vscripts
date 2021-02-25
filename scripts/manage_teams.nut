@@ -1,4 +1,4 @@
-// https://github.com/darnias2/vscripts/blob/master/manage_teams.nut
+// https://github.com/darnias2/Vscripts/blob/master/scripts/manage_teams.nut
 
 // Purpose:
 // Changes the teams of bots or players while remembering their previous team
