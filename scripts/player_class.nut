@@ -2,8 +2,9 @@
 https://github.com/darnias2/Vscripts/blob/master/scripts/player_class.nut
 
 Function:
-	Stores player information in table "Players" using the class "Player" also assigns values inside the players script scope
 	SteamID and Name is only collected if player joins during the map not with map change
+	Stores player information in table "Players" using the class "Player"
+	Stores Player class values inside players own Script Scope
 	You can get players information by accessing their script scope eg. "activator.GetScriptScope().userid" will return activators UserID
 	You can also find players by UserID using GetPlayerByUserID() eg. "GetPlayerByUserID(50)" if player with UserID 50 exists it will return his handle
 
@@ -49,9 +50,18 @@ logic_eventlistener:
 		printl("Handle: " + this.handle);
 		printl(" ");		
 	}
+	function SetName(name){
+		return this.name = name
+	}
 	function SetIndex(entindex){
 		return this.index = entindex
 	}
+	function SetUserID(userid){
+		return this.userid = userid
+	}
+	function SetSteamID(steamid){
+		return this.steamid = steamid
+	}	
 	function SetHandle(handle){
 		return this.handle = handle
 	}	
@@ -85,6 +95,7 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 
 ::PlayerDisconnect <- function(event){
 	try{
+		DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[event.userid]);		
 		delete Players[event.userid];
 	}
 	catch(error){
@@ -92,49 +103,35 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 	}
 }
 
-::PlayerInfo <- function(event){
+::PlayerInfo <- function(event){ // Assings class values to players script scope
 	DebugPrint("[PlayerInfo] - Trying to add UserID: " + event.userid + " to Players");
-	if (Players.len() == 0){ // Players is empty so we can't even loop through it, force add first one
+	if (!(event.userid in Players)){ // Player doesn't exist in the table	
 		Players[event.userid] <- Player(null, generated_player.entindex(), event.userid, null, generated_player);
 		generated_player.GetScriptScope().name <- null;
 		generated_player.GetScriptScope().index <- Players[event.userid].index;
 		generated_player.GetScriptScope().userid <- Players[event.userid].userid;
 		generated_player.GetScriptScope().steamid <- null;
 		generated_player.GetScriptScope().handle <- Players[event.userid].handle;
-		DebugPrint("[PlayerInfo] - UserID: " + event.userid + " (index: " + generated_player.entindex() + ") added to Players");					
+		DebugPrint("[PlayerInfo] - UserID: " + event.userid + " (index: " + generated_player.entindex() + ") added to Players");
+		return
 	}
-	else{
-		foreach (player in Players){
-			if (!(event.userid in Players)){ // Player doesn't exist in the table	
-				Players[event.userid] <- Player(null, generated_player.entindex(), event.userid, null, generated_player);
-				generated_player.GetScriptScope().name <- null;
-				generated_player.GetScriptScope().index <- Players[event.userid].index;
-				generated_player.GetScriptScope().userid <- Players[event.userid].userid;
-				generated_player.GetScriptScope().steamid <- null;
-				generated_player.GetScriptScope().handle <- Players[event.userid].handle;
-				DebugPrint("[PlayerInfo] - UserID: " + event.userid + " (index: " + generated_player.entindex() + ") added to Players");
-				return
-			}
-			else if (event.userid in Players && Players[event.userid].index == null){ // Player added through PlayerConnect, we need to add entindex and handle only
-				Players[event.userid].SetIndex(generated_player.entindex());
-				Players[event.userid].SetHandle(generated_player);
-				generated_player.GetScriptScope().name <- Players[event.userid].name;
-				generated_player.GetScriptScope().index <- Players[event.userid].index;
-				generated_player.GetScriptScope().userid <- Players[event.userid].userid;
-				generated_player.GetScriptScope().steamid <- Players[event.userid].steamid;
-				generated_player.GetScriptScope().handle <- Players[event.userid].handle;
-				DebugPrint("[PlayerInfo] - UserID already in table, setting index to: " + generated_player.entindex());
-				DebugPrint("[PlayerInfo] - UserID already in table, setting handle to: " + generated_player);
-				return
-			}
-			else if (event.userid in Players && Players[event.userid].index != null){ // Player exists in table and his entindex is set
-				DebugPrint("[PlayerInfo] - UserID: " + event.userid + " is already in Players");
-				return				
-			}	
-		}
+	else if (event.userid in Players && Players[event.userid].index == null){ // Player added through PlayerConnect, but we still need to add Index and Handle
+		Players[event.userid].SetIndex(generated_player.entindex());
+		Players[event.userid].SetHandle(generated_player);
+		generated_player.GetScriptScope().name <- Players[event.userid].name;
+		generated_player.GetScriptScope().index <- Players[event.userid].index;
+		generated_player.GetScriptScope().userid <- Players[event.userid].userid;
+		generated_player.GetScriptScope().steamid <- Players[event.userid].steamid;
+		generated_player.GetScriptScope().handle <- Players[event.userid].handle;
+		DebugPrint("[PlayerInfo] - UserID already in table, setting index to: " + generated_player.entindex());
+		DebugPrint("[PlayerInfo] - UserID already in table, setting handle to: " + generated_player);
+		return
 	}
+	else if (event.userid in Players && Players[event.userid].index != null){ // Player exists in table and his entindex is set
+		DebugPrint("[PlayerInfo] - UserID: " + event.userid + " is already in Players");
+		return				
+	}	
 }
-
 
 function AssignUserID(){ // Looping Think function, assigns 1 player per loop
 	local p = null;
@@ -143,10 +140,10 @@ function AssignUserID(){ // Looping Think function, assigns 1 player per loop
 			if (p.ValidateScriptScope()){
 				local script_scope = p.GetScriptScope();
 				if (!("GeneratedUserID" in script_scope)){
-					DebugPrint("[AssignUserID] - Generated UserID for " + p);
 					::generated_player <- p;
 					script_scope.GeneratedUserID <- true;
 					EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
+					DebugPrint("[AssignUserID] - Generated UserID for " + p);					
 					break
 				}
 			}
