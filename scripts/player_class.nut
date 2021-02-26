@@ -16,7 +16,6 @@ logic_eventlistener:
 	Fetch Event Data: Yes
 		OnEventFired > !self > RunScriptCode > PlayerConnect(event_data)
 
-
 logic_eventlistener:
 	Event Name: player_disconnect
 	Fetch Event Data: Yes
@@ -58,8 +57,8 @@ logic_eventlistener:
 	}	
 }
 
-::DEBUG <- true;
-::DebugPrint<-function(text){
+::DEBUG <- false;
+::DebugPrint<-function(text){ // Print misc debug text
 	if (!DEBUG)return;
 	printl(text);
 }
