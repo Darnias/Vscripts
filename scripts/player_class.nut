@@ -14,7 +14,6 @@
 	}
 
 	function DumpValues(){
-		printl("Instance: " + this);
 		printl("------------");
 		printl("Name: " + this.name);
 		printl("Entindex: " + this.index);
@@ -41,7 +40,7 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){
 	}
 }
 
-::GetEntityForIndex <- function(entindex){
+::GetEntityByIndex <- function(entindex){
 	local ent = null;
 	while (ent = Entities.FindByClassname(ent, "*")){
 		if (ent.entindex() == entindex){
@@ -70,7 +69,7 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){
 ::PlayerSpawn <- function(){
 	foreach (player in Players){
 		if (player.handle == null){
-			player.handle = GetEntityForIndex(player.index);
+			player.handle = GetEntityByIndex(player.index);
 		}
 	}
 }
@@ -92,7 +91,7 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){
 				Players[event.userid] <- Player(null, CI, event.userid, null, null);
 				printl("[PlayerInfo] - UserID: " + event.userid + " (index: " + CI + ") added to Players");
 				CAPTURED_PLAYER <- null;
-				return
+				return;
 			}
 		}
 	}
