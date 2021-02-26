@@ -79,16 +79,6 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 	}
 }
 
-::GetEntityByIndex <- function(entindex){ // Return entity handle by entindex
-	local ent = null;
-	while (ent = Entities.FindByClassname(ent, "*")){
-		if (ent.entindex() == entindex){
-		return ent
-		}
-	}
-	return null
-}
-
 ::PlayerConnect <- function(event){
 	Players[event.userid] <- Player(event.name, null, event.userid, event.networkid, null); // entindex is null for now, event returns a 0
 }
