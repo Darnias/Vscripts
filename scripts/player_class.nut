@@ -12,7 +12,7 @@ Required entities:
 
 logic_eventlistener:
 	Entity Scripts: player_class.nut
-	Script think function: AssignUserID
+	Script think function: GenerateUserID
 	Event Name: player_connect
 	Fetch Event Data: Yes
 		OnEventFired > !self > RunScriptCode > PlayerConnect(event_data)
@@ -103,7 +103,7 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 	}
 }
 
-::PlayerInfo <- function(event){ // Assings class values to players script scope
+::PlayerInfo <- function(event){ // Assigns class values to players script scope
 	local generated_scope = generated_player.GetScriptScope();
 	DebugPrint("[PlayerInfo] - Trying to add UserID " + event.userid + " to Players");
 	if (!(event.userid in Players)){ // Player doesn't exist in the table	
@@ -113,7 +113,7 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 		generated_scope.userid <- Players[event.userid].userid;
 		generated_scope.steamid <- null;
 		generated_scope.handle <- Players[event.userid].handle;
-		DebugPrint("[PlayerInfo] - UserID: " + event.userid + " (index: " + generated_player.entindex() + ") added to Players");
+		DebugPrint("[PlayerInfo] - UserID " + event.userid + " (index " + generated_player.entindex() + ") added to Players");
 	}
 	else if (event.userid in Players && Players[event.userid].index == null){ // Player added through PlayerConnect, but we still need to add Index and Handle
 		Players[event.userid].SetIndex(generated_player.entindex());
@@ -123,14 +123,14 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 		generated_scope.userid <- Players[event.userid].userid;
 		generated_scope.steamid <- Players[event.userid].steamid;
 		generated_scope.handle <- Players[event.userid].handle;
-		DebugPrint("[PlayerInfo] - UserID already in table, setting index to: " + generated_player.entindex() + " and handle to: " + generated_player);
+		DebugPrint("[PlayerInfo] - UserID " + event.userid + " already in table, setting index to " + generated_player.entindex() + " and handle to " + generated_player);
 	}
 	else if (event.userid in Players && Players[event.userid].index != null){ // Player exists in table and his entindex is set
 		DebugPrint("[PlayerInfo] - UserID: " + event.userid + " is already in Players");				
 	}	
 }
 
-function AssignUserID(){ // Looping Think function, assigns 1 player per loop
+function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 	local p = null;
 	while (p = Entities.FindByClassname(p, "*")){
 		if (p.GetClassname() == "player" || p.GetClassname() == "cs_bot"){
@@ -140,7 +140,7 @@ function AssignUserID(){ // Looping Think function, assigns 1 player per loop
 					::generated_player <- p;
 					script_scope.GeneratedUserID <- true;
 					EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
-					DebugPrint("[AssignUserID] - Generated UserID for " + p);					
+					DebugPrint("[GenerateUserID] - Generated UserID for " + p);					
 					break
 				}
 			}
