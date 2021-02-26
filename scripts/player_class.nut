@@ -67,7 +67,7 @@ logic_eventlistener:
 	}	
 }
 
-::DEBUG <- true;
+::DEBUG <- false;
 ::DebugPrint <- function(text){ // Print misc debug text
 	if (!DEBUG)return
 	printl(text);
