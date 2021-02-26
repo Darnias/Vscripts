@@ -108,10 +108,8 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 	DebugPrint("[PlayerInfo] - Trying to add UserID " + event.userid + " to Players");
 	if (!(event.userid in Players)){ // Player doesn't exist in the table	
 		Players[event.userid] <- Player(null, generated_player.entindex(), event.userid, null, generated_player);
-		generated_scope.name <- null;
 		generated_scope.index <- Players[event.userid].index;
 		generated_scope.userid <- Players[event.userid].userid;
-		generated_scope.steamid <- null;
 		generated_scope.handle <- Players[event.userid].handle;
 		DebugPrint("[PlayerInfo] - UserID " + event.userid + " (index " + generated_player.entindex() + ") added to Players");
 	}
@@ -126,7 +124,7 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 		DebugPrint("[PlayerInfo] - UserID " + event.userid + " already in table, setting index to " + generated_player.entindex() + " and handle to " + generated_player);
 	}
 	else if (event.userid in Players && Players[event.userid].index != null){ // Player exists in table and his entindex is set
-		DebugPrint("[PlayerInfo] - UserID: " + event.userid + " is already in Players");				
+		DebugPrint("[PlayerInfo] - UserID " + event.userid + " is already in Players");				
 	}	
 }
 
