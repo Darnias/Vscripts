@@ -152,9 +152,7 @@ function AssignUserID(){ // Looping Think function, assigns 1 player per loop
 	}
 }
 
-// Get PLayer info functions
-
-::GetPlayerByUserID <- function(userid){
+::GetPlayerByUserID <- function(userid){ // Returns players handle if the userid matches his userid
 	foreach (player in Players){
 		if (player.userid == userid){
 			return player.handle
@@ -162,7 +160,7 @@ function AssignUserID(){ // Looping Think function, assigns 1 player per loop
 	}
 }
 
-::GetPlayerByIndex <- function(entindex){
+::GetPlayerByIndex <- function(entindex){ // Returns players handle if the entindex matches his index
 	foreach (player in Players){
 		if (player.index == entindex){
 			return player.handle
