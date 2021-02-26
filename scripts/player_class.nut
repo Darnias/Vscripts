@@ -77,21 +77,21 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){
 ::PlayerInfo <- function(event){
 	printl("[PlayerInfo] - Trying to add UserID: " + event.userid + " to Players");
 	if (Players.len() == 0){
-		Players[event.userid] <- Player(null, CI, event.userid, null, null);
-		printl("[PlayerInfo] - UserID: " + event.userid + " (index: " + CI + ") added to Players");	
+		Players[event.userid] <- Player(null, GENERATED_INDEX, event.userid, null, null);
+		printl("[PlayerInfo] - UserID: " + event.userid + " (index: " + GENERATED_INDEX + ") added to Players");	
 		CAPTURED_PLAYER <- null;				
 	}
 	else{
 		foreach (player in Players){
 			if (event.userid in Players){
 				printl("[PlayerInfo] - UserID: " + event.userid + " is already in Players");
-				return;
+				return
 			}
 			else{				
-				Players[event.userid] <- Player(null, CI, event.userid, null, null);
-				printl("[PlayerInfo] - UserID: " + event.userid + " (index: " + CI + ") added to Players");
+				Players[event.userid] <- Player(null, GENERATED_INDEX, event.userid, null, null);
+				printl("[PlayerInfo] - UserID: " + event.userid + " (index: " + GENERATED_INDEX + ") added to Players");
 				CAPTURED_PLAYER <- null;
-				return;
+				return
 			}
 		}
 	}
@@ -106,7 +106,7 @@ function AssignUserID(){ // This a Think function
 				local script_scope = p.GetScriptScope();
 				if (!("GeneratedUserID" in script_scope)){
 					printl("[AssignUserID] - Generated UserID for " + p);
-					::CI <- p.entindex();
+					::GENERATED_INDEX <- p.entindex();
 					script_scope.GeneratedUserID<-true;
 					EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
 					break
@@ -120,6 +120,17 @@ function AssignUserID(){ // This a Think function
 	foreach (player in Players){
 		if (player.userid == userid){
 			return player.handle
+		}
+		else{
+			return null
+		}
+	}
+}
+
+::GetPlayerByIndex <- function(entindex){
+	foreach (player in Players){
+		if (player.index == entindex){
+			return player.index
 		}
 		else{
 			return null
