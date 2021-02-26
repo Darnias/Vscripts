@@ -2,10 +2,10 @@
 https://github.com/darnias2/Vscripts/blob/master/scripts/player_class.nut
 
 Function:
-	Stores player information in table "Players" using the class "Player"
+	Stores player information in table "Players" using the class "Player" also assigns values inside the players script scope
 	SteamID and Name is only collected if player joins during the map not with map change
 	You can get players information by accessing their script scope eg. "activator.GetScriptScope().userid" will return activators UserID
-	You can also find players by UserID using GetPlayerByUserID() eg. "GetPlayerByUserID(50)" if player with UserID 50 exists, it will return his handle
+	You can also find players by UserID using GetPlayerByUserID() eg. "GetPlayerByUserID(50)" if player with UserID 50 exists it will return his handle
 
 Required entities:
 
