@@ -49,8 +49,8 @@ logic_eventlistener:
 		printl("Handle: " + this.handle);
 		printl(" ");		
 	}
-	function SetIndex(int){
-		return this.index = int
+	function SetIndex(entindex){
+		return this.index = entindex
 	}
 	function SetHandle(handle){
 		return this.handle = handle
@@ -69,7 +69,7 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 	}
 }
 
-function OnPostSpawn(){
+function OnPostSpawn(){ // Called each time entity spawns (new round)
 if (!("Players" in getroottable())){ // Create Table Players only once
 	::Players <- {};
 	}
@@ -134,7 +134,7 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 }
 
 
-function AssignUserID(){ // This a Think function
+function AssignUserID(){ // Looping Think function, assigns 1 player per loop
 	local p = null;
 	while (p = Entities.FindByClassname(p, "*")){
 		if (p.GetClassname() == "player" || p.GetClassname() == "cs_bot"){
@@ -152,13 +152,12 @@ function AssignUserID(){ // This a Think function
 	}
 }
 
+// Get PLayer info functions
+
 ::GetPlayerByUserID <- function(userid){
 	foreach (player in Players){
 		if (player.userid == userid){
 			return player.handle
-		}
-		else{
-			return null
 		}
 	}
 }
@@ -167,9 +166,6 @@ function AssignUserID(){ // This a Think function
 	foreach (player in Players){
 		if (player.index == entindex){
 			return player.handle
-		}
-		else{
-			return null
 		}
 	}
 }
