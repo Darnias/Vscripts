@@ -4,8 +4,8 @@ https://github.com/darnias2/Vscripts/blob/master/scripts/player_class.nut
 Function:
 	Stores player information in table "Players" using the class "Player"
 	SteamID and Name is only collected if player joins during the map not with map change
-	You can retrieve this information by looping through "Players" or using functions like GetPlayerByUserID() which returns the players handle
-	Player information is stored only once per player, AssignUserID is looping think function to account of late joiners
+	You can get players information by doing accessing their script scope eg. "activator.userid" will return activators UserID
+	You can also find players by UserID using GetPlayerByUserID() eg. "GetPlayerByUserID(50)" if player with UserID 50 exists, it will return his handle
 
 Required entities:
 
@@ -58,8 +58,8 @@ logic_eventlistener:
 }
 
 ::DEBUG <- false;
-::DebugPrint<-function(text){ // Print misc debug text
-	if (!DEBUG)return;
+::DebugPrint <- function(text){ // Print misc debug text
+	if (!DEBUG)return
 	printl(text);
 }
 
@@ -107,20 +107,33 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 	DebugPrint("[PlayerInfo] - Trying to add UserID: " + event.userid + " to Players");
 	if (Players.len() == 0){ // Players is empty so we can't even loop through it, force add first one
 		Players[event.userid] <- Player(null, generated_player.entindex(), event.userid, null, generated_player);
-		DebugPrint("[PlayerInfo] - UserID: " + event.userid + " (index: " + generated_player.entindex() + ") added to Players");	
-		CAPTURED_PLAYER <- null;				
+		generated_player.GetScriptScope().name <- null;
+		generated_player.GetScriptScope().index <- Players[event.userid].index;
+		generated_player.GetScriptScope().userid <- Players[event.userid].userid;
+		generated_player.GetScriptScope().steamid <- null;
+		generated_player.GetScriptScope().handle <- Players[event.userid].handle;
+		DebugPrint("[PlayerInfo] - UserID: " + event.userid + " (index: " + generated_player.entindex() + ") added to Players");					
 	}
 	else{
 		foreach (player in Players){
 			if (!(event.userid in Players)){ // Player doesn't exist in the table	
 				Players[event.userid] <- Player(null, generated_player.entindex(), event.userid, null, generated_player);
+				generated_player.GetScriptScope().name <- null;
+				generated_player.GetScriptScope().index <- Players[event.userid].index;
+				generated_player.GetScriptScope().userid <- Players[event.userid].userid;
+				generated_player.GetScriptScope().steamid <- null;
+				generated_player.GetScriptScope().handle <- Players[event.userid].handle;
 				DebugPrint("[PlayerInfo] - UserID: " + event.userid + " (index: " + generated_player.entindex() + ") added to Players");
-				CAPTURED_PLAYER <- null;
 				return
 			}
 			else if (event.userid in Players && Players[event.userid].index == null){ // Player added through PlayerConnect, we need to add entindex and handle only
 				Players[event.userid].SetIndex(generated_player.entindex());
 				Players[event.userid].SetHandle(generated_player);
+				generated_player.GetScriptScope().name <- Players[event.userid].name;
+				generated_player.GetScriptScope().index <- Players[event.userid].index;
+				generated_player.GetScriptScope().userid <- Players[event.userid].userid;
+				generated_player.GetScriptScope().steamid <- Players[event.userid].steamid;
+				generated_player.GetScriptScope().handle <- Players[event.userid].handle;
 				DebugPrint("[PlayerInfo] - UserID already in table, setting index to: " + generated_player.entindex());
 				DebugPrint("[PlayerInfo] - UserID already in table, setting handle to: " + generated_player);
 				return
@@ -128,7 +141,7 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 			else if (event.userid in Players && Players[event.userid].index != null){ // Player exists in table and his entindex is set
 				DebugPrint("[PlayerInfo] - UserID: " + event.userid + " is already in Players");
 				return				
-			}			
+			}	
 		}
 	}
 }
@@ -143,7 +156,7 @@ function AssignUserID(){ // Looping Think function, assigns 1 player per loop
 				if (!("GeneratedUserID" in script_scope)){
 					DebugPrint("[AssignUserID] - Generated UserID for " + p);
 					::generated_player <- p;
-					script_scope.GeneratedUserID<-true;
+					script_scope.GeneratedUserID <- true;
 					EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
 					break
 				}
