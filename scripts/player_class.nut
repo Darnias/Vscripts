@@ -1,31 +1,30 @@
 /*
 https://github.com/darnias2/Vscripts/blob/master/scripts/player_class.nut
 
-Function:
-	SteamID and Name is only collected if player joins during the map not with map change
+About:
 	Stores player information in table "Players" using the class "Player"
+		*SteamID and Name is only collected if player joins during the map not with map change
 	Stores Player class values inside players own Script Scope
 	You can get players information by accessing their script scope eg. "activator.GetScriptScope().userid" will return activators UserID
 	You can also find players by UserID using GetPlayerByUserID() eg. "GetPlayerByUserID(50)" if player with UserID 50 exists it will return his handle
 
 Required entities:
+	logic_eventlistener:
+		Entity Scripts: player_class.nut
+		Script think function: GenerateUserID
+		Event Name: player_connect
+		Fetch Event Data: Yes
+			OnEventFired > !self > RunScriptCode > PlayerConnect(event_data)
 
-logic_eventlistener:
-	Entity Scripts: player_class.nut
-	Script think function: GenerateUserID
-	Event Name: player_connect
-	Fetch Event Data: Yes
-		OnEventFired > !self > RunScriptCode > PlayerConnect(event_data)
+	logic_eventlistener:
+		Event Name: player_disconnect
+		Fetch Event Data: Yes
+			OnEventFired > !self > RunScriptCode > PlayerDisconnect(event_data)	
 
-logic_eventlistener:
-	Event Name: player_disconnect
-	Fetch Event Data: Yes
-		OnEventFired > !self > RunScriptCode > PlayerDisconnect(event_data)	
-
-logic_eventlistener:
-	Event Name: player_info
-	Fetch Event Data: Yes
-		OnEventFired > !self > RunScriptCode > PlayerInfo(event_data)	
+	logic_eventlistener:
+		Event Name: player_info
+		Fetch Event Data: Yes
+			OnEventFired > !self > RunScriptCode > PlayerInfo(event_data)	
 */
 
 ::Player <- class{
