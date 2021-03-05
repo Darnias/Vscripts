@@ -49,21 +49,21 @@
 		printl("Handle: " + this.handle);
 		printl(" ");		
 	}
-	function SetName(name){
+	function setName(name){
 		return this.name = name
 	}
-	function SetIndex(entindex){
+	function setIndex(entindex){
 		return this.index = entindex
 	}
-	function SetUserID(userid){
+	function setUserID(userid){
 		return this.userid = userid
 	}
-	function SetSteamID(steamid){
+	function setSteamID(steamid){
 		return this.steamid = steamid
 	}	
-	function SetHandle(handle){
+	function setHandle(handle){
 		return this.handle = handle
-	}	
+	}
 }
 
 ::DEBUG <- false;
@@ -94,7 +94,7 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 
 ::PlayerDisconnect <- function(event){
 	try{
-		DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[event.userid]);		
+		DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[event.userid]);
 		delete Players[event.userid];
 	}
 	catch(error){
@@ -113,8 +113,8 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 		DebugPrint("[PlayerInfo] - UserID " + event.userid + " (index " + generated_player.entindex() + ") added to Players");
 	}
 	else if (event.userid in Players && Players[event.userid].index == null){ // Player added through PlayerConnect, but we still need to add Index and Handle
-		Players[event.userid].SetIndex(generated_player.entindex());
-		Players[event.userid].SetHandle(generated_player);
+		Players[event.userid].setIndex(generated_player.entindex());
+		Players[event.userid].setHandle(generated_player);
 		generated_scope.name <- Players[event.userid].name;
 		generated_scope.index <- Players[event.userid].index;
 		generated_scope.userid <- Players[event.userid].userid;
@@ -123,7 +123,7 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 		DebugPrint("[PlayerInfo] - UserID " + event.userid + " already in table, setting index to " + generated_player.entindex() + " and handle to " + generated_player);
 	}
 	else if (event.userid in Players && Players[event.userid].index != null){ // Player exists in table and his entindex is set
-		DebugPrint("[PlayerInfo] - UserID " + event.userid + " is already in Players");				
+		DebugPrint("[PlayerInfo] - UserID " + event.userid + " is already in Players");
 	}	
 }
 
@@ -137,7 +137,7 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 					::generated_player <- p;
 					script_scope.GeneratedUserID <- true;
 					EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
-					DebugPrint("[GenerateUserID] - Generated UserID for " + p);					
+					DebugPrint("[GenerateUserID] - Generated UserID for " + p);
 					break
 				}
 			}
