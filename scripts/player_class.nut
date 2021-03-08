@@ -1,5 +1,5 @@
 /*
-	https://github.com/darnias2/Vscripts/blob/master/scripts/player_class.nut
+	https://github.com/darnias/Vscripts/blob/master/scripts/player_class.nut
 
 	About:
 		Stores player information in table "Players" using the class "Player"
