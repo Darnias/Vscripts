@@ -1,4 +1,4 @@
-// https://github.com/darnias2/Vscripts/blob/master/scripts/take_screenshots.nut
+// https://github.com/darnias/Vscripts/blob/master/scripts/take_screenshots.nut
 
 // Purpose:
 // Teleports player and takes a screenshot, loops until all coordinates have been visited.
