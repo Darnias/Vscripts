@@ -1,5 +1,5 @@
 /*
-	https://github.com/darnias2/Vscripts/blob/master/scripts/player_class.nut
+	https://github.com/darnias/Vscripts/blob/master/scripts/player_class.nut
 
 	About:
 		Stores player information in table "Players" using the class "Player"
@@ -162,6 +162,7 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 		}
 	}
 }
+<<<<<<< HEAD
 
 ::GetPlayerBySteamID <- function(steamid){ // Returns players handle if the steamid matches
 	foreach (player in Players){
@@ -170,3 +171,5 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 		}
 	}
 }
+=======
+>>>>>>> 82a5ba7fb13622e07d6bef74632c34759b6debf7
