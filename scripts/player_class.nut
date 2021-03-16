@@ -162,7 +162,6 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 		}
 	}
 }
-<<<<<<< HEAD
 
 ::GetPlayerBySteamID <- function(steamid){ // Returns players handle if the steamid matches
 	foreach (player in Players){
@@ -171,5 +170,3 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 		}
 	}
 }
-=======
->>>>>>> 82a5ba7fb13622e07d6bef74632c34759b6debf7
