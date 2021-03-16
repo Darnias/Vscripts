@@ -69,6 +69,18 @@
 	}
 }
 
+// ========================= Init & Debug =========================
+
+function OnPostSpawn(){ // Called each time entity spawns (new round)
+if (!("Players" in getroottable())){ // Create Table Players only once
+	::Players <- {};
+	}
+if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create event proxy
+	::event_proxy <- Entities.CreateByClassname("info_game_event_proxy");
+	::event_proxy.__KeyValueFromString("event_name", "player_info");	
+	}
+}
+
 ::DEBUG <- false;
 ::DebugPrint <- function(text){ // Print misc debug text
 	if (!DEBUG)return
@@ -78,16 +90,6 @@
 function DumpPlayers(){ // Dumps all players that are in Players table
 	foreach (player in Players){
 		player.DumpValues()
-	}
-}
-
-function OnPostSpawn(){ // Called each time entity spawns (new round)
-if (!("Players" in getroottable())){ // Create Table Players only once
-	::Players <- {};
-	}
-if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create event proxy
-	::event_proxy <- Entities.CreateByClassname("info_game_event_proxy");
-	::event_proxy.__KeyValueFromString("event_name", "player_info");	
 	}
 }
 
@@ -107,7 +109,7 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 	}
 }
 
-// ========================= FIND FUNCTIONS =========================
+// ========================= Find Functions =========================
 
 ::GetPlayerByUserID <- function(userid){ // Returns players handle if the userid matches
 	foreach (player in Players){
