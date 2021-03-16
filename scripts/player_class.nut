@@ -112,10 +112,11 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 // ========================= Find Functions =========================
 
 ::GetPlayerByUserID <- function(userid){ // Returns players handle if the userid matches
-	foreach (player in Players){
-		if (player.userid == userid){
-			return player.handle
-		}
+	try{
+		return Players[userid].handle
+	}
+	catch(error){
+		return null
 	}
 }
 
