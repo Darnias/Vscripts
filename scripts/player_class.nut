@@ -126,6 +126,7 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 			return player.handle
 		}
 	}
+	return null
 }
 
 ::GetPlayerBySteamID <- function(steamid){ // Returns players handle if the steamid matches
@@ -134,6 +135,7 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 			return player.handle
 		}
 	}
+	return null
 }
 
 // ========================= Data Collection and Distribution =========================
