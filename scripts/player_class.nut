@@ -10,21 +10,24 @@
 
 	Required entities:
 		logic_eventlistener:
+			Targetname: listen_join
 			Entity Scripts: player_class.nut
 			Script think function: GenerateUserID
 			Event Name: player_connect
 			Fetch Event Data: Yes
-				OnEventFired > !self > RunScriptCode > PlayerConnect(event_data)
+				OnEventFired > listen_join > RunScriptCode > PlayerConnect(event_data)
 
 		logic_eventlistener:
+			Targetname: listen_disconnect
 			Event Name: player_disconnect
 			Fetch Event Data: Yes
-				OnEventFired > !self > RunScriptCode > PlayerDisconnect(event_data)	
+				OnEventFired > listen_disconnect > RunScriptCode > PlayerDisconnect(event_data)	
 
 		logic_eventlistener:
+			Targetname: listen_info
 			Event Name: player_info
 			Fetch Event Data: Yes
-				OnEventFired > !self > RunScriptCode > PlayerInfo(event_data)	
+				OnEventFired > listen_info > RunScriptCode > PlayerInfo(event_data)	
 */
 
 ::Player <- class{
