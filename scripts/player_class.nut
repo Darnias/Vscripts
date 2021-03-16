@@ -91,6 +91,8 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 	}
 }
 
+// ========================= Event Functions =========================
+
 ::PlayerConnect <- function(event){
 	Players[event.userid] <- Player(event.name, null, event.userid, event.networkid, null); // entindex is null for now, event returns a 0
 }
@@ -104,6 +106,34 @@ if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create
 		DebugPrint("[PlayerDisconnect] - Couldn't delete because " + error);
 	}
 }
+
+// ========================= FIND FUNCTIONS =========================
+
+::GetPlayerByUserID <- function(userid){ // Returns players handle if the userid matches
+	foreach (player in Players){
+		if (player.userid == userid){
+			return player.handle
+		}
+	}
+}
+
+::GetPlayerByIndex <- function(entindex){ // Returns players handle if the entindex matches
+	foreach (player in Players){
+		if (player.index == entindex){
+			return player.handle
+		}
+	}
+}
+
+::GetPlayerBySteamID <- function(steamid){ // Returns players handle if the steamid matches
+	foreach (player in Players){
+		if (player.steamid == steamid){
+			return player.handle
+		}
+	}
+}
+
+// ========================= Data Collection and Distribution =========================
 
 ::PlayerInfo <- function(event){ // Assigns class values to players script scope
 	local generated_scope = generated_player.GetScriptScope();
@@ -146,30 +176,6 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 					break
 				}
 			}
-		}
-	}
-}
-
-::GetPlayerByUserID <- function(userid){ // Returns players handle if the userid matches
-	foreach (player in Players){
-		if (player.userid == userid){
-			return player.handle
-		}
-	}
-}
-
-::GetPlayerByIndex <- function(entindex){ // Returns players handle if the entindex matches
-	foreach (player in Players){
-		if (player.index == entindex){
-			return player.handle
-		}
-	}
-}
-
-::GetPlayerBySteamID <- function(steamid){ // Returns players handle if the steamid matches
-	foreach (player in Players){
-		if (player.steamid == steamid){
-			return player.handle
 		}
 	}
 }
