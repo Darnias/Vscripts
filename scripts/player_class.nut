@@ -147,7 +147,7 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 	}
 }
 
-::GetPlayerByUserID <- function(userid){ // Returns players handle if the userid matches his userid
+::GetPlayerByUserID <- function(userid){ // Returns players handle if the userid matches
 	foreach (player in Players){
 		if (player.userid == userid){
 			return player.handle
@@ -155,9 +155,17 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 	}
 }
 
-::GetPlayerByIndex <- function(entindex){ // Returns players handle if the entindex matches his index
+::GetPlayerByIndex <- function(entindex){ // Returns players handle if the entindex matches
 	foreach (player in Players){
 		if (player.index == entindex){
+			return player.handle
+		}
+	}
+}
+
+::GetPlayerBySteamID <- function(steamid){ // Returns players handle if the steamid matches
+	foreach (player in Players){
+		if (player.steamid == steamid){
 			return player.handle
 		}
 	}
