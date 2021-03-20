@@ -9,9 +9,9 @@
     Run a function 'GiveKnife(knives.<KNIFE NAME HERE>)'
 
     Examples of the script on a func_button
-        OnUse > !self > RunScriptCode > GiveKnife(knives.karambit)
-        OnUse > !self > RunScriptCode > GiveKnife(knives.survival)
-        OnUse > !self > RunScriptCode > GiveKnife(knives.css)       
+        OnPressed > !self > RunScriptCode > GiveKnife(knives.karambit)
+        OnDamaged > !self > RunScriptCode > GiveKnife(knives.survival)
+        OnUseLocked > !self > RunScriptCode > GiveKnife(knives.css)       
 */
 
 enum knives{
