@@ -29,7 +29,7 @@ enum knives{
 	survival = "weapon_knife_canis", // Survival Knife
 	paracord = "weapon_knife_cord", // Paracord Knife
 	nomad = "weapon_knife_outdoor", // Nomad Knife
-	ursus = "weapon_knife_ursus" // Ursus Knife
+	ursus = "weapon_knife_ursus", // Ursus Knife
 	talon = "weapon_knife_widowmaker", // Talon Knife
 	css = "weapon_knife_css", // CS:S Knife
 	navaja = "weapon_knife_gypsy_jackknife", // Navaja Knife
