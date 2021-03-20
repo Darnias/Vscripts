@@ -1,14 +1,16 @@
-// https://github.com/darnias/Vscripts/blob/master/scripts/take_screenshots.nut
+/*
+	https://github.com/darnias/Vscripts/blob/master/scripts/take_screenshots.nut
 
-// Purpose:
-// Teleports player and takes a screenshot, loops until all coordinates have been visited.
-// Automatically sets player -64 units on Z axis because of getpos wrong coordinates.
+	Purpose:
+	Teleports player and takes a screenshot, loops until all coordinates have been visited.
+	Automatically sets player -64 units on Z axis because of getpos wrong coordinates.
 
-// Manual:
-// Type "getpos" in console to get your current position and view angles.
-// Copy that line and put it inside of POSITIONS following the example.
-// Execute the script by typing "script_execute take_screenshots" in console.
-// You can toggle between Jpeg and Tga by changing the boolean below.
+	Manual:
+	Type "getpos" in console to get your current position and view angles.
+	Copy that line and put it inside of POSITIONS following the example.
+	Execute the script by typing "script_execute take_screenshots" in console.
+	You can toggle between Jpeg and Tga by changing the boolean below.
+*/
 
 JPEG <- true; // Uses JPEG if true, uses TGA if false
 
