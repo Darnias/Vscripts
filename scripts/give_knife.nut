@@ -16,7 +16,7 @@
 
 enum knives{
 	knife = "weapon_knife", // Default Knife
-	gut = "weapon_knife_gut", // Gut Knife 
+	gut = "weapon_knife_gut", // Gut Knife
 	bowie = "weapon_knife_survival_bowie", // Bowie Knife
 	flip = "weapon_knife_flip", // Flip Knife
 	daggers = "weapon_knife_push", // Shadow Daggers
@@ -24,7 +24,7 @@ enum knives{
 	butterfly = "weapon_knife_butterfly", // Butterfly Knife
 	m9_bayonet = "weapon_knife_m9_bayonet", // M9 Bayonet
 	bayonet = "weapon_bayonet", // Bayonet
-	karambit = "weapon_knife_karambit", // karambit
+	karambit = "weapon_knife_karambit", // Karambit
 	skeleton = "weapon_knife_skeleton", // Skeleton Knife
 	survival = "weapon_knife_canis", // Survival Knife
 	paracord = "weapon_knife_cord", // Paracord Knife
@@ -47,7 +47,7 @@ function GiveKnife(knife_name){
 			knife_equip.__KeyValueFromInt(knife_name, 1);
 			EntFireByHandle(knife_equip, "Use", "", 0, activator, activator);
 			knife_equip.Destroy();
-			EntFire("weapon_knife", "AddOutput", "classname weapon_knifegg", 0.01, null);
+			EntFire("weapon_knife", "AddOutput", "classname weapon_knifegg", FrameTime(), null);
 			return
 		}
     }
@@ -55,5 +55,5 @@ function GiveKnife(knife_name){
 	knife_equip.__KeyValueFromInt(knife_name, 1);
 	EntFireByHandle(knife_equip, "Use", "", 0, activator, activator);
 	knife_equip.Destroy();
-	EntFire("weapon_knife", "AddOutput", "classname weapon_knifegg", 0.01, null);
+	EntFire("weapon_knife", "AddOutput", "classname weapon_knifegg", FrameTime(), null);
 }
