@@ -105,8 +105,12 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 		DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[event.userid]);
 		delete Players[event.userid];
 	}
-	catch(error){
-		DebugPrint("[PlayerDisconnect] - Couldn't delete because " + error);
+	catch(e){ // More than 1 player disconnect in same tick, loop through Players and delete all invalid handles
+		foreach (userid, player in Players){
+			if (player.handle.IsValid() == false){
+				delete Players[userid]
+			}
+		}
 	}
 }
 
@@ -116,7 +120,7 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 	try{
 		return Players[userid].handle
 	}
-	catch(error){
+	catch(e){
 		return null
 	}
 }
