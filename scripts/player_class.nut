@@ -96,6 +96,7 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 // ========================= Event Functions =========================
 
 ::PlayerConnect <- function(event){
+	TRY_TO_GENERATE <- true; // New player joined, resume UserID generating
 	Players[event.userid] <- Player(event.name, null, event.userid, event.networkid, null); // entindex is null for now, event returns a 0
 }
 
@@ -167,7 +168,9 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 	}	
 }
 
+TRY_TO_GENERATE <- true;
 function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
+	if(!TRY_TO_GENERATE)return;
 	local p = null;
 	while (p = Entities.FindByClassname(p, "*")){
 		if (p.GetClassname() == "player" || p.GetClassname() == "cs_bot"){
@@ -178,9 +181,12 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 					script_scope.GeneratedUserID <- true;
 					EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
 					DebugPrint("[GenerateUserID] - Generated UserID for " + p);
-					break
+					return
 				}
 			}
 		}
 	}
+	DebugPrint("[GenerateUserID] - Generated all players, pausing loop")
+	TRY_TO_GENERATE <- false; // Generated all players, pause loop for now, resumed in PlayerConnect()
+	return	
 }
