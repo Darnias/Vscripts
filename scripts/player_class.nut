@@ -100,7 +100,7 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 	Players[event.userid] <- Player(event.name, null, event.userid, event.networkid, null); // entindex is null for now, event returns a 0
 }
 
-::PlayerDisconnect <- function(event){
+::PlayerDisconnect <- function(event){ // Remove UserID index from Players when player disconnects
 	try{
 		DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[event.userid]);
 		delete Players[event.userid];
@@ -108,7 +108,8 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 	catch(e){ // More than 1 player disconnect in same tick, loop through Players and delete all invalid handles
 		foreach (userid, player in Players){
 			if (player.handle.IsValid() == false){
-				delete Players[userid]
+				DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[userid]);
+				delete Players[userid];
 			}
 		}
 	}
