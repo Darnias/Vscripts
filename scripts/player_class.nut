@@ -11,7 +11,6 @@
 		logic_eventlistener:
 			Targetname: listen_join
 			Entity Scripts: player_class.nut
-			Script think function: GenerateUserID
 			Event Name: player_connect
 			Fetch Event Data: Yes
 				OnEventFired > listen_join > RunScriptCode > PlayerConnect(event_data)
@@ -126,7 +125,10 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 // ========================= Event Functions =========================
 
 ::PlayerConnect <- function(event){
-	TRY_TO_GENERATE <- true; // New player joined, resume UserID generating
+	if (!TRY_TO_GENERATE){
+		TRY_TO_GENERATE <- true;
+		GenerateUserID();
+	}
 	Players[event.userid] <- Player(event.name, null, event.userid, event.networkid, null); // entindex is null for now, event returns a 0
 }
 
@@ -178,7 +180,7 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 	}	
 }
 
-TRY_TO_GENERATE <- true;
+TRY_TO_GENERATE <- false;
 function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 	if (!TRY_TO_GENERATE)return;
 	local p = null;
@@ -191,6 +193,7 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 					script_scope.GeneratedUserID <- true;
 					EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
 					DebugPrint("[GenerateUserID] - Generated UserID for " + p);
+					EntFireByHandle(self, "RunScriptCode", "GenerateUserID()", FrameTime(), null, null);
 					return
 				}
 			}
