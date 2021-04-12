@@ -111,7 +111,7 @@ if (!("event_proxy" in getroottable()) || !(event_proxy.IsValid())){ // Create e
 	}
 }
 
-::DEBUG <- true;
+::DEBUG <- false;
 ::DebugPrint <- function(text){ // Print misc debug text
 	if (!DEBUG)return;
 	printl(text);
