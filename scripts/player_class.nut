@@ -111,7 +111,7 @@ if (!("event_proxy" in getroottable()) || !(event_proxy.IsValid())){ // Create e
 	}
 }
 
-::DEBUG <- false;
+::DEBUG <- true;
 ::DebugPrint <- function(text){ // Print misc debug text
 	if (!DEBUG)return;
 	printl(text);
@@ -137,8 +137,12 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 	}
 	catch(e){ // More than 1 player disconnected in same tick, loop through Players and delete all invalid handles
 		foreach (userid, player in Players){
-			if (player.handle.IsValid() == false){
-				DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[userid]);
+			if (player.handle == null){
+				delete Players[userid];
+				DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[userid]); // Null handle
+			}			
+			else if (player.handle.IsValid() == false){
+				DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[userid]); // Invalid handle
 				delete Players[userid];
 			}
 		}
