@@ -1,6 +1,5 @@
+//	https://github.com/darnias/Vscripts/blob/master/scripts/player_class.nut
 /*
-	https://github.com/darnias/Vscripts/blob/master/scripts/player_class.nut
-
 	About:
 		Stores player information in table "Players" using the class "Player"
 			*SteamID and Name is only collected if player joins during the map not with map change
@@ -29,6 +28,37 @@
 			Fetch Event Data: Yes
 				OnEventFired > listen_info > RunScriptCode > PlayerInfo(event_data)	
 */
+
+// ========================= Find Functions =========================
+
+::GetPlayerByUserID <- function(userid){ // Returns players handle if the userid matches
+	try{
+		return Players[userid].handle
+	}
+	catch(e){
+		return null
+	}
+}
+
+::GetPlayerByIndex <- function(entindex){ // Returns players handle if the entindex matches
+	foreach (player in Players){
+		if (player.index == entindex){
+			return player.handle
+		}
+	}
+	return null
+}
+
+::GetPlayerBySteamID <- function(steamid){ // Returns players handle if the steamid matches
+	foreach (player in Players){
+		if (player.steamid == steamid){
+			return player.handle
+		}
+	}
+	return null
+}
+
+// ========================= Player Class =========================
 
 ::Player <- class{
 	name = null;
@@ -75,15 +105,15 @@ function OnPostSpawn(){ // Called each time entity spawns (new round)
 if (!("Players" in getroottable())){ // Create Table Players only once
 	::Players <- {};
 	}
-if (!("event_proxy" in getroottable()) || !(::event_proxy.IsValid())){ // Create event proxy
+if (!("event_proxy" in getroottable()) || !(event_proxy.IsValid())){ // Create event proxy
 	::event_proxy <- Entities.CreateByClassname("info_game_event_proxy");
-	::event_proxy.__KeyValueFromString("event_name", "player_info");	
+	::event_proxy.__KeyValueFromString("event_name", "player_info");
 	}
 }
 
 ::DEBUG <- false;
 ::DebugPrint <- function(text){ // Print misc debug text
-	if (!DEBUG)return
+	if (!DEBUG)return;
 	printl(text);
 }
 
@@ -105,7 +135,7 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 		DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[event.userid]);
 		delete Players[event.userid];
 	}
-	catch(e){ // More than 1 player disconnect in same tick, loop through Players and delete all invalid handles
+	catch(e){ // More than 1 player disconnected in same tick, loop through Players and delete all invalid handles
 		foreach (userid, player in Players){
 			if (player.handle.IsValid() == false){
 				DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[userid]);
@@ -113,35 +143,6 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 			}
 		}
 	}
-}
-
-// ========================= Find Functions =========================
-
-::GetPlayerByUserID <- function(userid){ // Returns players handle if the userid matches
-	try{
-		return Players[userid].handle
-	}
-	catch(e){
-		return null
-	}
-}
-
-::GetPlayerByIndex <- function(entindex){ // Returns players handle if the entindex matches
-	foreach (player in Players){
-		if (player.index == entindex){
-			return player.handle
-		}
-	}
-	return null
-}
-
-::GetPlayerBySteamID <- function(steamid){ // Returns players handle if the steamid matches
-	foreach (player in Players){
-		if (player.steamid == steamid){
-			return player.handle
-		}
-	}
-	return null
 }
 
 // ========================= Data Collection and Distribution =========================
@@ -175,7 +176,7 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 
 TRY_TO_GENERATE <- true;
 function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
-	if(!TRY_TO_GENERATE)return;
+	if (!TRY_TO_GENERATE)return;
 	local p = null;
 	while (p = Entities.FindByClassname(p, "*")){
 		if (p.GetClassname() == "player" || p.GetClassname() == "cs_bot"){
@@ -191,7 +192,6 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 			}
 		}
 	}
-	DebugPrint("[GenerateUserID] - Generated all players, pausing loop")
 	TRY_TO_GENERATE <- false; // Generated all players, pause loop for now, resumed in PlayerConnect()
-	return	
+	DebugPrint("[GenerateUserID] - Generated all players, pausing loop");
 }
