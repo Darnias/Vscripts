@@ -11,6 +11,7 @@
 		logic_eventlistener:
 			Targetname: listen_connect
 			Entity Scripts: player_class.nut
+			Script think function: GenerateUserID
 			Event Name: player_connect
 			Fetch Event Data: Yes
 				OnEventFired > listen_connect > RunScriptCode > PlayerConnect(event_data)
@@ -73,13 +74,12 @@
 		handle = i_handle;
 	}
 	function DumpValues(){
-		printl("------------");
+		printl("______________________________");
 		printl("Name: " + this.name);
 		printl("Entindex: " + this.index);
 		printl("UserID: " + this.userid);
 		printl("SteamID: " + this.steamid);
-		printl("Handle: " + this.handle);
-		printl(" ");		
+		printl("Handle: " + this.handle);	
 	}
 	function setName(name){
 		return this.name = name
@@ -124,11 +124,8 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 
 // ========================= Event Functions =========================
 
-TRY_GENERATING <- true;
 ::PlayerConnect <- function(event){
-	Players[event.userid] <- Player(event.name, null, event.userid, event.networkid, null); // entindex is null for now, event returns a 0
-	TRY_GENERATING = true;
-	GenerateUserID();	
+	Players[event.userid] <- Player(event.name, null, event.userid, event.networkid, null); // entindex is null for now, event returns a 0	
 }
 
 ::PlayerDisconnect <- function(event){ // Remove UserID index from Players when player disconnects
@@ -176,11 +173,10 @@ TRY_GENERATING <- true;
 	}
 	else if (event.userid in Players && Players[event.userid].index != null){ // Player exists in table and his entindex is set
 		DebugPrint("[PlayerInfo] - UserID " + event.userid + " is already in Players");
-	}	
+	}
 }
 
 function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
-	if (!TRY_GENERATING)return;
 	local p = null;
 	while (p = Entities.FindByClassname(p, "*")){
 		if (p.GetClassname() == "player" || p.GetClassname() == "cs_bot"){
@@ -191,27 +187,9 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 					script_scope.GeneratedUserID <- true;
 					EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
 					DebugPrint("[GenerateUserID] - Generated UserID for " + p);
-					EntFireByHandle(self, "RunScriptCode", "GenerateUserID()", 0.2, null, null);
 					return
 				}
 			}
-		}	
-	}
-	CheckGenerating();
-	return
-}
-
-function CheckGenerating(){
-	foreach (player in Players){
-		if (player.handle != null){
-			TRY_GENERATING = false;
-			DebugPrint("[CheckGenerating] - All players were generated, pausing loop");
-			return
-		}
-		else{
-			TRY_GENERATING = true;
-			DebugPrint("[CheckGenerating] - A player was not generated, resuming loop");
-			return
 		}
 	}
 }
