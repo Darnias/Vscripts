@@ -1,7 +1,9 @@
 //	https://github.com/darnias/Vscripts/blob/master/scripts/get_held_weapon.nut
 /*
-	About:
+	About: Returns the currently held weapon of a player as a classname string
 
+	Manual: RunscriptCode GetHeldWeapon(player)
+		Where 'player' is a handle of targeted player. Such as FindByName(null, "Bob")
 */
 
 function GetHeldWeapon(handle = null){
