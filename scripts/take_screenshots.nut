@@ -1,6 +1,5 @@
+//	https://github.com/darnias/Vscripts/blob/master/scripts/take_screenshots.nut
 /*
-	https://github.com/darnias/Vscripts/blob/master/scripts/take_screenshots.nut
-
 	Purpose:
 	Teleports player and takes a screenshot, loops until all coordinates have been visited.
 	Automatically sets player -64 units on Z axis because of getpos wrong coordinates.
