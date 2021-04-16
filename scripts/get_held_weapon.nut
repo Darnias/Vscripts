@@ -26,9 +26,9 @@ function GetHeldWeaponHandle(handle = null){ // Returns the currently held weapo
 	while (weapon = Entities.FindByClassname(weapon, "weapon_*")){
 		if (weapon.GetMoveParent() == handle){
 			local WeaponName = GetHeldWeaponName(handle);
-			switch (WeaponName){ // These guns inherit classname
-				case "weapon_axe": WeaponName = "weapon_melee";break
-				case "weapon_hammer": WeaponName = "weapon_melee";break
+			switch (WeaponName){ // These weapons inherit classname
+				case "weapon_axe":
+				case "weapon_hammer":
 				case "weapon_spanner": WeaponName = "weapon_melee";break
 				case "weapon_usp_silencer": WeaponName = "weapon_hkp2000";break
 				case "weapon_cz75a": WeaponName = "weapon_p250";break
