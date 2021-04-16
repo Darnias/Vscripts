@@ -74,7 +74,7 @@ function ModelToClassname(weapon = null){
 		case "models/weapons/v_snip_ssg08.mdl":				return "weapon_ssg08";
 		case "models/weapons/v_sonar_bomb.mdl":				return "weapon_tagrenade";
 		case "models/weapons/v_spanner.mdl":				return "weapon_spanner";
-		case "models/weapons/v_tablet.mdl":					return "weapon_tablet";break;
+		case "models/weapons/v_tablet.mdl":					return "weapon_tablet";
 		default: return "Weapon Unknown"
 	}
 }
