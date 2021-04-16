@@ -13,9 +13,7 @@ function GetHeldWeaponName(handle = null){ // Returns the currently held weapon 
 	if (handle == null || typeof handle != "instance")return null; // Check for correct inputs
 	local vm = null;
 	while (vm = Entities.FindByClassname(vm, "predicted_viewmodel")){
-		if (vm.GetMoveParent() == handle){
-			return ModelToClassname(vm.GetModelName());
-		}
+		if (vm.GetMoveParent() == handle)return ModelToClassname(vm.GetModelName())
 	}
 	return null
 }
