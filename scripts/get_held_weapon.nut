@@ -36,9 +36,7 @@ function GetHeldWeaponHandle(handle = null){ // Returns the currently held weapo
 				case "weapon_m4a1_silencer": WeaponName = "weapon_m4a1";break
 				case "weapon_mp5sd": WeaponName = "weapon_mp7";break
 			}
-			if (weapon.GetClassname() == WeaponName){
-				return weapon
-			}
+			if (weapon.GetClassname() == WeaponName)return weapon
 		}
 	}
 	return null
