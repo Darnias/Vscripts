@@ -3,7 +3,7 @@
 	About: Returns the currently held weapon of a player as a classname string
 
 	Manual: RunscriptCode GetHeldWeapon(player)
-		Where 'player' is a handle of targeted player. Such as FindByName(null, "Bob")
+		Where 'player' is a handle of targeted player. Such as Entities.FindByName(null, "Bob")
 */
 
 function GetHeldWeapon(handle = null){
