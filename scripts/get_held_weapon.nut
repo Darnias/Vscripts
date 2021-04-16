@@ -41,7 +41,7 @@ function GetHeldWeaponHandle(handle = null){ // Returns the currently held weapo
 			}
 		}
 	}
-	return null	
+	return null
 }
 
 function ModelToClassname(weapon = null){
