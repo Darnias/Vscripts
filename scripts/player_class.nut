@@ -179,7 +179,7 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 	local p = null;
 	while (p = Entities.FindByClassname(p, "*")){
-		if (p.GetClassname() == "player" || p.GetClassname() == "cs_bot"){
+		if (p.GetClassname() == "player"){
 			if (p.ValidateScriptScope()){
 				local script_scope = p.GetScriptScope();
 				if (!("GeneratedUserID" in script_scope)){
