@@ -187,9 +187,10 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 					script_scope.GeneratedUserID <- true;
 					EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
 					DebugPrint("[GenerateUserID] - Generated UserID for " + p);
-					return
+					return FrameTime()
 				}
 			}
 		}
 	}
+	return FrameTime()
 }
