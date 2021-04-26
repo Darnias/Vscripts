@@ -110,9 +110,9 @@ if (!("event_proxy" in getroottable()) || !(event_proxy.IsValid())){ // Create e
 	}
 }
 
-::isDEBUG <- false;
+::DebugText <- false;
 ::DebugPrint <- function(text){ // Print misc debug text
-	if (!isDEBUG)return;
+	if (!DebugText)return;
 	printl(text);
 }
 
@@ -170,9 +170,6 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 		generated_scope.steamid <- Players[event.userid].steamid;
 		generated_scope.handle <- Players[event.userid].handle;
 		DebugPrint("[PlayerInfo] - UserID " + event.userid + " already in table, setting index to " + generated_player.entindex() + " and handle to " + generated_player);
-	}
-	else if (event.userid in Players && Players[event.userid].index != null){ // Player exists in table and his entindex is set
-		DebugPrint("[PlayerInfo] - UserID " + event.userid + " is already in Players");
 	}
 }
 
