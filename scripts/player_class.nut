@@ -110,9 +110,9 @@ if (!("event_proxy" in getroottable()) || !(event_proxy.IsValid())){ // Create e
 	}
 }
 
-::s_DEBUG <- false;
+::isDEBUG <- false;
 ::DebugPrint <- function(text){ // Print misc debug text
-	if (!s_DEBUG)return;
+	if (!isDEBUG)return;
 	printl(text);
 }
 
@@ -187,10 +187,10 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 					script_scope.GeneratedUserID <- true;
 					EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
 					DebugPrint("[GenerateUserID] - Generated UserID for " + p);
-					return FrameTime()
+					return FrameTime() // Try to generate next player next Tick
 				}
 			}
 		}
 	}
-	return FrameTime()
+	return 2.50 // All players generated, slow down loop check
 }
