@@ -5,7 +5,7 @@
 			*SteamID and Name is only collected if player joins during the map not with map change
 		Stores Player class values inside players own Script Scope
 		You can get players information by accessing their script scope eg. "activator.GetScriptScope().userid" will return activators UserID
-		You can also find players by UserID using GetPlayerByUserID() eg. "GetPlayerByUserID(50)" if player with UserID 50 exists it will return his handle
+		You can also find players by UserID using FindByUserID() eg. "FindByUserID(50)" if player with UserID 50 exists it will return his handle
 
 	Required entities:
 		logic_eventlistener:
@@ -31,7 +31,7 @@
 
 // ========================= Find Functions =========================
 
-::GetPlayerByUserID <- function(userid){ // Returns players handle if the userid matches
+::FindByUserID <- function(userid){ // Returns players handle if the userid matches
 	try{
 		return Players[userid].handle
 	}
@@ -40,7 +40,7 @@
 	}
 }
 
-::GetPlayerByIndex <- function(entindex){ // Returns players handle if the entindex matches
+::FindByIndex <- function(entindex){ // Returns players handle if the entindex matches
 	foreach (player in Players){
 		if (player.index == entindex){
 			return player.handle
@@ -49,7 +49,7 @@
 	return null
 }
 
-::GetPlayerBySteamID <- function(steamid){ // Returns players handle if the steamid matches
+::FindBySteamID <- function(steamid){ // Returns players handle if the steamid matches
 	foreach (player in Players){
 		if (player.steamid == steamid){
 			return player.handle
@@ -81,19 +81,10 @@
 		printl("SteamID: " + this.steamid);
 		printl("Handle: " + this.handle);	
 	}
-	function setName(name){
-		return this.name = name
-	}
-	function setIndex(entindex){
+	function SetIndex(entindex){
 		return this.index = entindex
-	}
-	function setUserID(userid){
-		return this.userid = userid
-	}
-	function setSteamID(steamid){
-		return this.steamid = steamid
 	}	
-	function setHandle(handle){
+	function SetHandle(handle){
 		return this.handle = handle
 	}
 }
@@ -110,12 +101,6 @@ if (!("event_proxy" in getroottable()) || !(event_proxy.IsValid())){ // Create e
 	}
 }
 
-::DebugText <- false;
-::DebugPrint <- function(text){ // Print misc debug text
-	if (!DebugText)return;
-	printl(text);
-}
-
 function DumpPlayers(){ // Dumps all players that are in Players table
 	foreach (player in Players){
 		player.DumpValues()
@@ -128,19 +113,17 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 	Players[event.userid] <- Player(event.name, null, event.userid, event.networkid, null); // entindex is null for now, event returns a 0	
 }
 
+// Note: Removing on disconnet is totally optional, depends if you want to clean disconnected players or not.
 ::PlayerDisconnect <- function(event){ // Remove UserID index from Players when player disconnects
 	try{
-		DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[event.userid]);
 		delete Players[event.userid];
 	}
 	catch(e){ // More than 1 player disconnected in same tick, loop through Players and delete all invalid handles
 		foreach (userid, player in Players){
-			if (player.handle == null){
-				DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[userid]); // Null handle			
+			if (player.handle == null){		
 				delete Players[userid];
 			}			
 			else if (player.handle.IsValid() == false){
-				DebugPrint("[PlayerDisconnect] - Deleted table entry " + Players[userid]); // Invalid handle
 				delete Players[userid];
 			}
 		}
@@ -151,7 +134,6 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 
 ::PlayerInfo <- function(event){ // Assigns class values to players script scope
 	local generated_scope = generated_player.GetScriptScope();
-	DebugPrint("[PlayerInfo] - Trying to add UserID " + event.userid + " to Players");
 	if (!(event.userid in Players)){ // Player doesn't exist in the table	
 		Players[event.userid] <- Player(null, generated_player.entindex(), event.userid, null, generated_player);
 		generated_scope.name <- null;
@@ -159,17 +141,15 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 		generated_scope.userid <- Players[event.userid].userid;
 		generated_scope.steamid <- null;
 		generated_scope.handle <- Players[event.userid].handle;
-		DebugPrint("[PlayerInfo] - UserID " + event.userid + " (index " + generated_player.entindex() + ") added to Players");
 	}
 	else if (event.userid in Players && Players[event.userid].index == null){ // Player added through PlayerConnect, but we still need to add Index and Handle
-		Players[event.userid].setIndex(generated_player.entindex());
-		Players[event.userid].setHandle(generated_player);
+		Players[event.userid].SetIndex(generated_player.entindex());
+		Players[event.userid].SetHandle(generated_player);
 		generated_scope.name <- Players[event.userid].name;
 		generated_scope.index <- Players[event.userid].index;
 		generated_scope.userid <- Players[event.userid].userid;
 		generated_scope.steamid <- Players[event.userid].steamid;
 		generated_scope.handle <- Players[event.userid].handle;
-		DebugPrint("[PlayerInfo] - UserID " + event.userid + " already in table, setting index to " + generated_player.entindex() + " and handle to " + generated_player);
 	}
 }
 
@@ -183,7 +163,6 @@ function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
 					::generated_player <- p;
 					script_scope.GeneratedUserID <- true;
 					EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
-					DebugPrint("[GenerateUserID] - Generated UserID for " + p);
 					return FrameTime() // Try to generate next player next Tick
 				}
 			}
