@@ -6,6 +6,7 @@
 		Stores Player class values inside players own Script Scope
 		You can get players information by accessing their script scope eg. "activator.GetScriptScope().userid" will return activators UserID
 		You can also find players by UserID using FindByUserID() eg. "FindByUserID(50)" if player with UserID 50 exists it will return his handle
+
 	Required entities:
 		logic_eventlistener:
 			Targetname: listen_connect
@@ -14,11 +15,13 @@
 			Event Name: player_connect
 			Fetch Event Data: Yes
 				OnEventFired > listen_connect > RunScriptCode > PlayerConnect(event_data)
+
 		logic_eventlistener:
 			Targetname: listen_disconnect
 			Event Name: player_disconnect
 			Fetch Event Data: Yes
 				OnEventFired > listen_disconnect > RunScriptCode > PlayerDisconnect(event_data)	
+				
 		logic_eventlistener:
 			Targetname: listen_info
 			Event Name: player_info
