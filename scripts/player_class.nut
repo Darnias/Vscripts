@@ -6,7 +6,6 @@
 		Stores Player class values inside players own Script Scope
 		You can get players information by accessing their script scope eg. "activator.GetScriptScope().userid" will return activators UserID
 		You can also find players by UserID using FindByUserID() eg. "FindByUserID(50)" if player with UserID 50 exists it will return his handle
-
 	Required entities:
 		logic_eventlistener:
 			Targetname: listen_connect
@@ -15,13 +14,11 @@
 			Event Name: player_connect
 			Fetch Event Data: Yes
 				OnEventFired > listen_connect > RunScriptCode > PlayerConnect(event_data)
-
 		logic_eventlistener:
 			Targetname: listen_disconnect
 			Event Name: player_disconnect
 			Fetch Event Data: Yes
 				OnEventFired > listen_disconnect > RunScriptCode > PlayerDisconnect(event_data)	
-
 		logic_eventlistener:
 			Targetname: listen_info
 			Event Name: player_info
@@ -79,7 +76,7 @@
 		printl("Entindex: " + this.index);
 		printl("UserID: " + this.userid);
 		printl("SteamID: " + this.steamid);
-		printl("Handle: " + this.handle);	
+		printl("Handle: " + this.handle);
 	}
 	function SetIndex(entindex){
 		return this.index = entindex
@@ -154,19 +151,20 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 }
 
 function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
-	local p = null;
-	while (p = Entities.FindByClassname(p, "*")){
-		if (p.GetClassname() == "player"){
-			if (p.ValidateScriptScope()){
-				local script_scope = p.GetScriptScope();
-				if (!("GeneratedUserID" in script_scope)){
-					::generated_player <- p;
-					script_scope.GeneratedUserID <- true;
-					EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
-					return FrameTime() // Try to generate next player next Tick
+	foreach (classname in ["player", "cs_bot"]){
+		for (local p = null;p = Entities.FindByClassname(p, classname);){
+			if (p.GetClassname() == "player"){
+				if (p.ValidateScriptScope()){
+					local script_scope = p.GetScriptScope();
+					if (!("GeneratedUserID" in script_scope)){
+						::generated_player <- p;
+						script_scope.GeneratedUserID <- true;
+						EntFireByHandle(event_proxy, "GenerateGameEvent", "", 0, p, null);
+						return FrameTime() // Try to generate next player next Tick
+					}
 				}
 			}
 		}
 	}
-	return 2.50 // All players generated, slow down loop check
+	return 2.00 // All players generated, slow down loop check
 }
