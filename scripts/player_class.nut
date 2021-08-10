@@ -154,8 +154,8 @@ function DumpPlayers(){ // Dumps all players that are in Players table
 }
 
 function GenerateUserID(){ // Looping Think function, assigns 1 player per loop
-	foreach (classname in ["player", "cs_bot"]){
-		for (local p = null;p = Entities.FindByClassname(p, classname);){
+	for (local p; p = Entities.Next(p);){
+    	if (p.GetClassname() == "player"){
 			if (p.ValidateScriptScope()){
 				local script_scope = p.GetScriptScope();
 				if (!("GeneratedUserID" in script_scope)){
