@@ -38,6 +38,7 @@ enum knives{
 
 function OnPostSpawn(){
 	knife_equip <- Entities.CreateByClassname("game_player_equip");
+	knife_equip.__KeyValueFromInt("spawnflags", 1);
 }
 
 function GiveKnife(knife_name){
