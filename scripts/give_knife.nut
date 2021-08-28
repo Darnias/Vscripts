@@ -36,23 +36,23 @@ enum knives{
 	falchion = "weapon_knife_falchion", // Falchion Knife
 }
 
+function OnPostSpawn(){
+	knife_equip <- Entities.CreateByClassname("game_player_equip");
+}
+
 function GiveKnife(knife_name){
 	if (activator == null)return;
 	local p_knife = null;
 	while (p_knife = Entities.FindByClassname(p_knife, "weapon_knife*")){
 		if (p_knife.GetOwner() == activator && p_knife.GetMoveParent() == activator){
 			p_knife.Destroy();
-			knife_equip <- Entities.CreateByClassname("game_player_equip");
 			knife_equip.__KeyValueFromInt(knife_name, 1);
 			EntFireByHandle(knife_equip, "Use", "", 0, activator, activator);
-			knife_equip.Destroy();
 			EntFire("weapon_knife", "AddOutput", "classname weapon_knifegg", FrameTime(), null);
 			return
 		}
     }
-	knife_equip <- Entities.CreateByClassname("game_player_equip");
 	knife_equip.__KeyValueFromInt(knife_name, 1);
 	EntFireByHandle(knife_equip, "Use", "", 0, activator, activator);
-	knife_equip.Destroy();
 	EntFire("weapon_knife", "AddOutput", "classname weapon_knifegg", FrameTime(), null);
 }
